@@ -65,6 +65,7 @@ class AnalysisManager(threading.Thread):
         self.rt_table = None
         self.unrouted_network = False
         self.stopped_aux = False
+        self.rs_ip = config("cuckoo:resultserver:ip")
         self.rs_port = config("cuckoo:resultserver:port")
         self.nat_redirections = []
         self.allowed_input_ports = []
@@ -214,7 +215,7 @@ class AnalysisManager(threading.Thread):
             options["file_name"] = File(self.task.target).get_name()
 
         options["id"] = self.task.id
-        options["ip"] = self.machine.resultserver_ip
+        options["ip"] = self.rs_ip
         options["port"] = self.rs_port
         options["category"] = self.task.category
         options["target"] = self.task.target
@@ -328,7 +329,7 @@ class AnalysisManager(threading.Thread):
         if self.route == "drop" or self.route == "internet":
             rooter(
                 "drop_enable", self.machine.ip,
-                config("cuckoo:resultserver:ip"),
+                str(self.rs_ip),
                 str(self.rs_port)
             )
 
@@ -356,7 +357,7 @@ class AnalysisManager(threading.Thread):
         if self.route == "tor":
             rooter(
                 "tor_enable", self.machine.ip,
-                str(config("cuckoo:resultserver:ip")),
+                str(self.rs_ip),
                 str(config("routing:tor:dnsport")),
                 str(config("routing:tor:proxyport"))
             )
@@ -393,7 +394,7 @@ class AnalysisManager(threading.Thread):
         if self.route == "drop" or self.route == "internet":
             rooter(
                 "drop_disable", self.machine.ip,
-                config("cuckoo:resultserver:ip"),
+                str(self.rs_ip),
                 str(self.rs_port)
             )
 
@@ -421,7 +422,7 @@ class AnalysisManager(threading.Thread):
         if self.route == "tor":
             rooter(
                 "tor_disable", self.machine.ip,
-                str(config("cuckoo:resultserver:ip")),
+                str(self.rs_ip),
                 str(config("routing:tor:dnsport")),
                 str(config("routing:tor:proxyport"))
             )
@@ -501,6 +502,7 @@ class AnalysisManager(threading.Thread):
             })
             return False
 
+        self.rs_ip = self.machine.resultserver_ip or ResultServer().ip
         self.rs_port = self.machine.resultserver_port or ResultServer().port
 
         # At this point we can tell the ResultServer about it.
