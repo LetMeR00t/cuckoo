@@ -197,7 +197,7 @@ do_setup(
         "elasticsearch==5.3.0",
         "flask==0.12.2",
         "flask-sqlalchemy==2.4.0",
-        "httpreplay>=0.2.4, <0.3",
+        "httpreplay>=0.2.4, <=0.3",
         "ipaddress>=1.0.22",
         "gevent>=1.2, <1.3",
         "jinja2==2.9.6",
