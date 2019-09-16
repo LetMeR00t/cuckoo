@@ -2375,7 +2375,7 @@ var default_analysis_options = {
 	'options': {
 		'enforce-timeout': false,
 		'full-memory-dump': false,
-		'enable-injection': true,
+		'enable-injection': false,
 		'process-memory-dump': true,
 		'simulated-human-interaction': true,
 		'remote-control': false
