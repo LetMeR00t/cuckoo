@@ -90,8 +90,7 @@ class HandlerContext(object):
 
             if e.errno != errno.ECONNRESET:
                 raise
-            log.debug("Task #%s had connection reset for %r", self.task_id,
-                      self)
+            log.debug("Task #%s had connection reset for %r : %s", self.task_id, self, e)
             return ""
 
     def drain_buffer(self):
